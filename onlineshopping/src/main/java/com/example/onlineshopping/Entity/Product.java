@@ -36,14 +36,26 @@ public class Product {
     @Column(name = "item_count")
     private int itemCount;
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @Column(name="description")
+    private String description;
+
     public Product(){}
 
-    public Product(String productId, String productName, double price, int itemCount, String imageUrl) {
+    public Product(String productId, String productName, double price, int itemCount, String imageUrl, String description) {
         this.productId = productId;
         this.productName = productName;
         this.price = price;
         this.itemCount = itemCount;
         this.imageUrl = imageUrl;
+        this.description = description;
     }
 
     public String getProductId() {

@@ -6,7 +6,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="order")
+@Table(name="orders")
 public class Order {
     @Id
     private String orderId;
@@ -15,11 +15,24 @@ public class Order {
 
     private String orderTime;
 
-    public Order(String orderId, double totalAmount, String orderTime) {
+    public String getProductList() {
+        return productList;
+    }
+
+    public void setProductList(String productList) {
+        this.productList = productList;
+    }
+
+    private String productList;
+
+    public Order(String orderId, double totalAmount, String orderTime, String productList) {
         this.orderId = orderId;
         this.totalAmount = totalAmount;
         this.orderTime = orderTime;
+        this.productList = productList;
     }
+
+    public Order(){}
 
     public String getOrderId() {
         return orderId;

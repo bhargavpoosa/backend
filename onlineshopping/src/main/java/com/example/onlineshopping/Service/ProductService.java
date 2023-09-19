@@ -27,4 +27,9 @@ public class ProductService {
         if(p.isPresent())return p.get();
         else throw new RuntimeException("Product Not Found");
     }
+
+    @Transactional(readOnly = true)
+    public List<Product> getProductsByName(String searchTerm){
+        return productRepo.searchProducts(searchTerm);
+    }
 }

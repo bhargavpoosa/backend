@@ -28,4 +28,10 @@ public class ProductController {
     public Product getProduct(@PathVariable String productId){
         return productService.getProduct(productId);
     }
+
+    @GetMapping("/productName/{searchTerm}")
+    public List<Product> getProductList(@PathVariable String searchTerm){
+        List<Product> products = productService.getProductsByName(searchTerm);
+        return products;
+    }
 }

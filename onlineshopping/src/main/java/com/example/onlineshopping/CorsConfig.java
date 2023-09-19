@@ -12,7 +12,17 @@ public class CorsConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/product/")
+                registry.addMapping("/product/*")
+                        .allowedOrigins("*");
+                registry.addMapping("/product/productName/{searchTerm}")
+                        .allowedOrigins("*");
+                registry.addMapping("/cart/*")
+                        .allowedOrigins("*");
+                registry.addMapping("/cart/add/*")
+                        .allowedOrigins("*");
+                registry.addMapping("/cart/remove/*")
+                        .allowedOrigins("*");
+                registry.addMapping("/cart/order/{totalPrice}/{productList}")
                         .allowedOrigins("*");
             }
         };

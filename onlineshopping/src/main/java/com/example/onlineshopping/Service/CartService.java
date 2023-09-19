@@ -23,42 +23,48 @@ public class CartService {
     @Autowired
     OrderRepo orderRepo;
 
+    @Autowired
+    ProductService productService;
+
 
     @Transactional
-    public void addtoCart(Product product){
+    public void addtoCart(String productId){
         List<Cart> productsInCart = cartRepo.findAll();
         for(Cart cart: productsInCart){
-            if(cart.getProd_id().equals(product.getProductId())){
+            if(cart.getProd_id().equals(productId)){
                 int quantity = cart.getQuantity();
-                double price = cart.getPrice();
                 cart.setQuantity(quantity + 1);
-                cart.setPrice(price + product.getPrice());
                 cartRepo.save(cart);
                 return;
             }
         }
-        Cart cart = new Cart(product.getProductId(), 1, product.getPrice());
+        Product p = productService.getProduct(productId);
+        Cart cart = new Cart(productId, 1, p.getPrice(), p.getProductName(), p.getImageUrl());
         cartRepo.save(cart);
     }
 
     @Transactional
-    public void removeFromCart(Product product){
+    public void removeFromCart(String productId){
         List<Cart> productsInCart = cartRepo.findAll();
         for(Cart cart: productsInCart){
-            if(cart.getProd_id().equals(product.getProductId())){
+            if(cart.getProd_id().equals(productId)){
                 int quantity = cart.getQuantity();
-                double price = cart.getPrice();
+                if(quantity == 0) return;
                 cart.setQuantity(quantity - 1);
-                cart.setPrice(price - product.getPrice());
                 cartRepo.save(cart);
             }
         }
     }
 
     @Transactional
-    public void bookProducts(double totalPrice){
-        Order order = new Order("O" + index, totalPrice, new Date().toString());
+    public void bookProducts(double totalPrice, String productList){
+        Order order = new Order("O" + index, totalPrice, new Date().toString(), productList );
         index+=1;
         orderRepo.save(order);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Cart> getProductList(){
+        return cartRepo.findAll();
     }
 }

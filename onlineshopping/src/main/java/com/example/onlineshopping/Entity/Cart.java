@@ -12,13 +12,46 @@ public class Cart {
 
     private int quantity;
 
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
     private double price;
 
-    public Cart(String prod_id, int quantity, double price) {
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    private String productName;
+
+    private String imageUrl;
+
+
+    public Cart(String prod_id, int quantity, double price, String productName, String imageUrl) {
         this.productId = prod_id;
         this.quantity = quantity;
         this.price = price;
+        this.productName = productName;
+        this.imageUrl = imageUrl;
     }
+
+    public Cart(){}
 
     public String getProd_id() {
         return productId;
@@ -36,11 +69,4 @@ public class Cart {
         this.quantity = quantity;
     }
 
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
 }

@@ -56,6 +56,10 @@ public class CartService {
         }
     }
 
+    public void deleteFromCart(String productId){
+        cartRepo.deleteById(productId);
+    }
+
     @Transactional
     public void bookProducts(double totalPrice, String productList){
         Order order = new Order("O" + index, totalPrice, new Date().toString(), productList );

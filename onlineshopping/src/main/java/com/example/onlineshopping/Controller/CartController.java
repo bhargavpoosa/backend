@@ -1,7 +1,6 @@
 package com.example.onlineshopping.Controller;
 
 import com.example.onlineshopping.Entity.Cart;
-import com.example.onlineshopping.Entity.Product;
 import com.example.onlineshopping.Service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,6 +24,12 @@ public class CartController {
     @PostMapping("/remove/{productId}")
     public HttpStatus removeFromCart(@PathVariable String productId){
         cartService.removeFromCart(productId);
+        return HttpStatus.OK;
+    }
+
+    @PostMapping("/{productId}")
+    public HttpStatus deleteFromCart(@PathVariable String productId){
+        cartService.deleteFromCart(productId);
         return HttpStatus.OK;
     }
 

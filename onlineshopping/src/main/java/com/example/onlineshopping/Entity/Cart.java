@@ -1,14 +1,29 @@
 package com.example.onlineshopping.Entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
-@Table(name="cart")
+@Table(name = "cart", indexes = {
+        @Index(name = "idx_user_name", columnList = "user_name")
+})
 public class Cart {
+    public int getCartItemId() {
+        return cartItemId;
+    }
+
+    public void setCartItemId(int cartItemId) {
+        this.cartItemId = cartItemId;
+    }
+
     @Id
-    private String productId;
+    @Column(name="cart_item_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int cartItemId;
+
+    @Column(name="user_name")
+    private String username;
+
+    private int productId;
 
     private int quantity;
 
@@ -43,7 +58,8 @@ public class Cart {
     private String imageUrl;
 
 
-    public Cart(String prod_id, int quantity, double price, String productName, String imageUrl) {
+    public Cart(String username, int prod_id, int quantity, double price, String productName, String imageUrl) {
+        this.username = username;
         this.productId = prod_id;
         this.quantity = quantity;
         this.price = price;
@@ -53,11 +69,11 @@ public class Cart {
 
     public Cart(){}
 
-    public String getProd_id() {
+    public int getProd_id() {
         return productId;
     }
 
-    public void setProd_id(String prod_id) {
+    public void setProd_id(int prod_id) {
         this.productId = prod_id;
     }
 
@@ -68,5 +84,14 @@ public class Cart {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
 
 }

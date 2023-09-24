@@ -1,6 +1,7 @@
 package com.example.onlineshopping.Controller;
 
 import com.example.onlineshopping.Entity.Product;
+import com.example.onlineshopping.Entity.ProductDetails;
 import com.example.onlineshopping.Service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,7 +22,7 @@ public class ProductController {
     }
 
     @GetMapping("/{productId}")
-    public Product getProduct(@PathVariable String productId){
+    public Product getProduct(@PathVariable int productId){
         return productService.getProduct(productId);
     }
 
@@ -29,6 +30,11 @@ public class ProductController {
     public List<Product> getProductList(@PathVariable String searchTerm){
         List<Product> products = productService.getProductsByName(searchTerm);
         return products;
+    }
+
+    @GetMapping("/productDetails/{productId}")
+    public ProductDetails getProductDetails(@PathVariable int productId){
+        return productService.findById(productId);
     }
 
     @ExceptionHandler(RuntimeException.class)

@@ -14,9 +14,6 @@ import java.util.List;
 
 @Component
 public class CartService {
-
-    static int index = 100;
-
     @Autowired
     CartRepo cartRepo;
 
@@ -28,10 +25,10 @@ public class CartService {
 
 
     @Transactional
-    public void addtoCart(String productId){
-        List<Cart> productsInCart = cartRepo.findAll();
+    public void addtoCart(String username, int productId){
+        List<Cart> productsInCart = cartRepo.findByUsername(username);
         for(Cart cart: productsInCart){
-            if(cart.getProd_id().equals(productId)){
+            if(cart.getProd_id() == productId){
                 int quantity = cart.getQuantity();
                 cart.setQuantity(quantity + 1);
                 cartRepo.save(cart);
@@ -39,36 +36,48 @@ public class CartService {
             }
         }
         Product p = productService.getProduct(productId);
-        Cart cart = new Cart(productId, 1, p.getPrice(), p.getProductName(), p.getImageUrl());
+        Cart cart = new Cart(username, productId, 1, p.getPrice(), p.getProductName(), p.getImageUrl());
         cartRepo.save(cart);
     }
 
     @Transactional
-    public void removeFromCart(String productId){
-        List<Cart> productsInCart = cartRepo.findAll();
+    public void removeFromCart(String username, int productId){
+        List<Cart> productsInCart = cartRepo.findByUsername(username);
         for(Cart cart: productsInCart){
-            if(cart.getProd_id().equals(productId)){
+            if(cart.getProd_id() == productId){
                 int quantity = cart.getQuantity();
                 if(quantity == 0) return;
+                if(quantity == 1){
+                    deleteFromCart(username, productId);
+                    return;
+                }
                 cart.setQuantity(quantity - 1);
                 cartRepo.save(cart);
             }
         }
     }
 
-    public void deleteFromCart(String productId){
-        cartRepo.deleteById(productId);
+    public void deleteFromCart(String username, int productId){
+        List<Cart> productsInCart = cartRepo.findByUsername(username);
+        for(Cart cart: productsInCart) {
+            if (cart.getProd_id() == productId) {
+                cartRepo.delete(cart);
+            }
+        }
     }
 
     @Transactional
-    public void bookProducts(double totalPrice, String productList){
-        Order order = new Order("O" + index, totalPrice, new Date().toString(), productList );
-        index+=1;
+    public void bookProducts(Order o){
+        Order order = new Order(o.getTotalAmount(), new Date().toString(), o.getProductList(), o.getUsername());
         orderRepo.save(order);
+        List<Cart> cartList = cartRepo.findByUsername(o.getUsername());
+        for(Cart cart: cartList){
+            cartRepo.delete(cart);
+        }
     }
 
     @Transactional(readOnly = true)
-    public List<Cart> getProductList(){
-        return cartRepo.findAll();
+    public List<Cart> getProductList(String username){
+        return cartRepo.findByUsername(username);
     }
 }

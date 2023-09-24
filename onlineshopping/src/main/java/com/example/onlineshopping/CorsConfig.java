@@ -12,18 +12,29 @@ public class CorsConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/user/*")
+                        .allowedOrigins("*");
+                registry.addMapping("/admin/")
+                        .allowedOrigins("*");
                 registry.addMapping("/product/*")
+                        .allowedOrigins("*");
+                registry.addMapping("/product/productDetails/*")
                         .allowedOrigins("*");
                 registry.addMapping("/product/productName/{searchTerm}")
                         .allowedOrigins("*");
-                registry.addMapping("/cart/*")
+                registry.addMapping("/cart/**")
                         .allowedOrigins("*");
+//                        .allowedOriginPatterns("*")
+//                        .allowCredentials(true)
+//                        .maxAge(3600);
                 registry.addMapping("/cart/add/*")
                         .allowedOrigins("*");
-                registry.addMapping("/cart/remove/*")
-                        .allowedOrigins("*");
-                registry.addMapping("/cart/order/{totalPrice}/{productList}")
-                        .allowedOrigins("*");
+//                registry.addMapping("/cart/order")
+//                        .allowedOrigins("*");
+//                registry.addMapping("/cart/remove/*")
+//                        .allowedOrigins("*");
+//                registry.addMapping("/cart/order/{totalPrice}/{productList}")
+//                        .allowedOrigins("*");
             }
         };
     }

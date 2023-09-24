@@ -1,9 +1,12 @@
 package com.example.onlineshopping.Controller;
 
 import com.example.onlineshopping.Entity.Cart;
+import com.example.onlineshopping.Entity.Order;
 import com.example.onlineshopping.Service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,32 +18,32 @@ public class CartController {
     @Autowired
     CartService cartService;
 
-    @PostMapping("/add/{productId}")
-    public HttpStatus addtoCart(@PathVariable String productId){
-        cartService.addtoCart(productId);
+    @PostMapping("/add/{username}/{productId}")
+    public HttpStatus addtoCart(@PathVariable String username, @PathVariable int productId){
+        cartService.addtoCart(username, productId);
         return HttpStatus.OK;
     }
 
-    @PostMapping("/remove/{productId}")
-    public HttpStatus removeFromCart(@PathVariable String productId){
-        cartService.removeFromCart(productId);
+    @PostMapping("/remove/{username}/{productId}")
+    public HttpStatus removeFromCart(@PathVariable String username, @PathVariable int productId){
+        cartService.removeFromCart(username, productId);
         return HttpStatus.OK;
     }
 
-    @PostMapping("/{productId}")
-    public HttpStatus deleteFromCart(@PathVariable String productId){
-        cartService.deleteFromCart(productId);
+    @PostMapping("/{username}/{productId}")
+    public HttpStatus deleteFromCart(@PathVariable String username, @PathVariable int productId){
+        cartService.deleteFromCart(username, productId);
         return HttpStatus.OK;
     }
 
-    @PostMapping("/order/{totalPrice}/{productList}")
-    public HttpStatus order(@PathVariable double totalPrice, @PathVariable String productList){
-        cartService.bookProducts(totalPrice, productList);
+    @PostMapping("/order")
+    public HttpStatus order(@RequestBody Order order){
+        cartService.bookProducts(order);
         return HttpStatus.OK;
     }
 
-    @GetMapping("/")
-    public List<Cart> getProductsFromCart(){
-        return cartService.getProductList();
+    @GetMapping("/{username}")
+    public List<Cart> getProductsFromCart(@PathVariable String username){
+        return cartService.getProductList(username);
     }
 }

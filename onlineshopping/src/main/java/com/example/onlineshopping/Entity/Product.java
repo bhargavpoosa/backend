@@ -1,25 +1,17 @@
 package com.example.onlineshopping.Entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
-@Table(name="product")
+@Table(name = "product", indexes = {
+        @Index(name = "idx_product_name", columnList = "prod_name"),
+        @Index(name="idx_description", columnList = "description")
+})
 public class Product {
     @Id
     @Column(name = "prod_id")
-    private String productId;
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int productId;
 
     @Column(name = "image_url")
     private String imageUrl;
@@ -49,8 +41,7 @@ public class Product {
 
     public Product(){}
 
-    public Product(String productId, String productName, double price, int itemCount, String imageUrl, String description) {
-        this.productId = productId;
+    public Product(String productName, double price, int itemCount, String imageUrl, String description) {
         this.productName = productName;
         this.price = price;
         this.itemCount = itemCount;
@@ -58,12 +49,20 @@ public class Product {
         this.description = description;
     }
 
-    public String getProductId() {
+    public int getProductId() {
         return productId;
     }
 
-    public void setProductId(String productId) {
+    public void setProductId(int productId) {
         this.productId = productId;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public String getProductName() {

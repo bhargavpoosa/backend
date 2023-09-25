@@ -40,9 +40,9 @@ public class AppSecurityConfig {
         http
                 .csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/product/**", "/user/**", "/admin/**").permitAll()
+                .requestMatchers("/product/**", "/user/**").permitAll()
                 .requestMatchers(HttpMethod.OPTIONS, "/cart/**").permitAll()
-                .requestMatchers("/cart/**").authenticated()
+                .requestMatchers("/cart/**", "/admin/**").authenticated()
                 .and()
                 .httpBasic();
 

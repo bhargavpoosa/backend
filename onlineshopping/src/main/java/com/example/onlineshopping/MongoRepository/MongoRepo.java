@@ -7,6 +7,5 @@ import org.springframework.data.mongodb.repository.Query;
 import java.util.Optional;
 
 public interface MongoRepo extends MongoRepository<ProductDetails, Integer> {
-    @Query("{'productId': ?0}")
-    Optional<ProductDetails> findByProductId(int productId);
+    ProductDetails findByProductId(int productId);
 }

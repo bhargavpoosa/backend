@@ -48,10 +48,7 @@ public class ProductService {
 
     @Transactional(readOnly = true)
     public ProductDetails findById(int productId){
-        Optional<ProductDetails> details = mongoRepo.findByProductId(productId);
-        if(details.isPresent())
-            return details.get();
-        else
-            return new ProductDetails(productId, "Superb", "5");
+        ProductDetails details = mongoRepo.findByProductId(productId);
+        return details;
     }
 }

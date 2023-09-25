@@ -3,6 +3,7 @@ package com.example.onlineshopping.config;
 import com.example.onlineshopping.Service.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -12,6 +13,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -31,12 +36,30 @@ public class AppSecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception
-    {
-        return http.csrf().disable().authorizeHttpRequests().requestMatchers("/product/**","/user/**", "/cart/**", "/admin/**").permitAll().and()
-//                .authorizeHttpRequests().requestMatchers("/cart/**").authenticated().and()
-                .httpBasic().and().build();
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf().disable()
+                .authorizeHttpRequests()
+                .requestMatchers("/product/**", "/user/**", "/admin/**").permitAll()
+                .requestMatchers(HttpMethod.OPTIONS, "/cart/**").permitAll()
+                .requestMatchers("/cart/**").authenticated()
+                .and()
+                .httpBasic();
+
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.addAllowedOrigin("*");
+        corsConfiguration.addAllowedMethod("*");
+        corsConfiguration.addAllowedHeader("*");
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", corsConfiguration);
+
+        CorsFilter corsFilter = new CorsFilter(source);
+        http.addFilterBefore(corsFilter, BasicAuthenticationFilter.class);
+
+        return http.build();
     }
+
 
     @Bean
     public AuthenticationProvider authenticationProvider()

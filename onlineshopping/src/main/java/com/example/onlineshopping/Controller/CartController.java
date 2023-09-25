@@ -4,15 +4,14 @@ import com.example.onlineshopping.Entity.Cart;
 import com.example.onlineshopping.Entity.Order;
 import com.example.onlineshopping.Service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/cart")
+@CrossOrigin(origins = "https://bhargavpoosa.github.io/frontend/frontend/")
 public class CartController {
 
     @Autowired

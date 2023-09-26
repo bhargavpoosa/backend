@@ -49,6 +49,8 @@ public class ProductService {
     @Transactional(readOnly = true)
     public ProductDetails findById(int productId){
         ProductDetails details = mongoRepo.findByProductId(productId);
+        if(details==null)
+            return new ProductDetails(productId, "Awesome", "4.5");
         return details;
     }
 }
